@@ -1,0 +1,35 @@
+($yarn add)
+($yarn add)
+($yarn add)
+($yarn add)
+($yarn add)
+
+// Node js 관련
+Express 라이브러리 설치 ($yarn add express)
+    terminal: npm init > entry point: $server.js
+    [server.js]
+    const express = require("express");
+    const app = express();
+
+node server.js 귀찮으니까 > nodemon ($yarn add global nodemon)
+    $nodemon server.js (서버 재실행을 알아서 해줌)
+body-parser  ($yarn add body-parser)
+    [server.js]
+    const bodyParser = require('body-parser')
+    app.use(bodyParser.urlencoded({ extended: true })); 
+
+// css 설치
+https://getbootstrap.com/docs/4.6/getting-started/introduction/ 
+
+// MongoDB 설치하기(무료 호스팅도) --> notion
+    mongodb ($yarn add mongodb)
+    [server.js]
+    const MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect('',(에러, client)=>{
+mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w=majority
+    })
+
+
+
+mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
+
