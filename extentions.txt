@@ -5,16 +5,27 @@
 ($yarn add)
 
 // Node js 관련
+컴퓨터에 nodejs 최신 버전 다운로드
+    https://nodejs.org/ko/
+
 Express 라이브러리 설치 ($yarn add express)
     terminal: npm init > entry point: $server.js
     [server.js]
     const express = require("express");
     const app = express();
 
-node server.js 귀찮으니까 > nodemon ($yarn add global nodemon)
+node server.js 귀찮으니까 > nodemon ($npm install -g nodemon)
     $nodemon server.js (서버 재실행을 알아서 해줌)
-body-parser  ($yarn add body-parser)
-    [server.js]
+    안되면 powershell 관리자 모드로 들어가서
+    1. $executionpolicy
+    -> (Restricted) 나오면 
+    2. $set-executionpolicy unrestricted
+    -> 변경하시겠습니까?
+    3. $y
+    -> (enter)
+
+app.post.안에 요청이 됐는지 알아보기 위해 필요한 라이브러리 > body-parser  ($yarn add body-parser)
+    [server.js] // 다시 켜
     const bodyParser = require('body-parser')
     app.use(bodyParser.urlencoded({ extended: true })); 
 
