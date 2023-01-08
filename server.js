@@ -1,24 +1,19 @@
-const MONGO_CLIENT_CONNECTOR = process.env.MONGO_CLIENT_CONNECTOR;
+// const MONGO_CLIENT_CONNECTOR = process.env.MONGO_CLIENT_CONNECTOR;
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 
 var db; // db  변수 지정 필수(어떤 db에 저장할 것인지)
 /* MongoDB@3.6.4 연결 */
 const MongoClient = require("mongodb").MongoClient;
-MongoClient.connect(MONGO_CLIENT_CONNECTOR, (에러, client) => {
+MongoClient.connect('mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w=majority', (에러, client) => {
   // 에러 처리
   if (에러) return console.log(에러);
 
   // todoapp 이라는 database(폴더)에 연결
   db = client.db('todoapp');
-
-  // 본격적으로 db에 저장
-  // 내 이름과 나이를 db에 저장
-  db.collection('post').insertOne({ 이름: '차니니', 나이: 42 }, (에러, 결과) => {
-    console.log('저장완료');
-  });
 
   //서버띄우는 코드 여기로 옮기기
   app.listen("3030", function () {
@@ -64,11 +59,41 @@ app.get("/write", (요청, 응답) => {
 app.post("/add", (요청, 응답) => {
   응답.send("전송 완료");
   // 보내면 요청이라는 파라미터에 숨어있음. body parser 다운 받아야 보임
+  // 콘솔창에서 확인 가능
   console.log(요청.body);
-  // 콘솔창에서 확인 가능  
+
   // /add 라는 경로로 post 요청을 하면 데이터 2개(제목, 날짜데이터)를 보내주는데
   // 이 때, post라는 이름을 가진 collection에 두개 데이터 저장하기
-  db.collection('post').insertOne({ 제목: 요청.body.title, 날짜데이터: 요청.body.date }, (에러, 결과) => {
-    console.log('저장완료');
+
+  // 글 번호 달아서 저장하기
+  // _id : 총 게시글 개수 + 1 (mongo db에는 auto increment가 없어서 직접 만들어야함)
+  // todoapp > Create Database > counter > insert document > 
+  // totalPost: 0 (int32), name: '게시물개수'
+  // 1개만 필요해서 findOne
+  db.collection('counter').findOne({ name: '게시물개수' }, (에러, 결과) => {
+    var 총게시물개수 = 결과.totalPost;
+    db.collection('post').insertOne({ _id: 결과.totalPost + 1, todo: 요청.body.todo, date: 요청.body.date }, (에러, 결과) => {
+      console.log('저장완료');
+      // counter라는 collection에 있는 totalPost라는 항목도 1 증가시켜야함(Update)
+      db.collection('counter').updateOne({ name: '게시물개수' }, { $inc: { totalPost: 1 } }, (에러, 결과) => {
+        if (에러) return console.log(에러);
+      });
+    });
+  });
+});
+
+/*
+  /list로 GET요청으로 접속하면
+  실제 DB에 저장된 데이터들로 예쁘게 꾸며진 HTML을 보여줌
+  **ejs 파일 보여주기
+ */
+app.get('/list', (요청, 응답) => {
+  // 1. 데이터 꺼내기
+  // ejs error 화면이 뜬다면 위치는 views 폴더 안에 생성
+  // post에 저장된 모든 데이터 가져오기(find().toArray())
+  db.collection('post').find().toArray((에러, 결과) => {
+    // 2. 찾은걸 ejs파일에 집어넣어주세요
+    응답.render('list.ejs', { posts: 결과 });
+    console.log(결과)
   });
 });

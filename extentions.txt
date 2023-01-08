@@ -2,7 +2,6 @@
 ($yarn add)
 ($yarn add)
 ($yarn add)
-($yarn add)
 
 // Node js 관련
 컴퓨터에 nodejs 최신 버전 다운로드
@@ -40,6 +39,13 @@ https://getbootstrap.com/docs/4.6/getting-started/introduction/
 mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w=majority
     })
 
+// EJS (html 전처리 엔진)
+    EJS($yarn add ejs)
+    [server.js]
+    app.set('view engine', 'ejs');
+    [views] 라는 폴더 만들고
+    list.html > list.ejs -- 이름 변경 후에 views에 넣음
+    <%= 변수이름%> 사용 가능 
 
 
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
