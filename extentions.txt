@@ -47,6 +47,9 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
     list.html > list.ejs -- 이름 변경 후에 views에 넣음
     <%= 변수이름%> 사용 가능 
 
+// AJAX 사용하기 위해 jQuery 라이브러리 설치
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    ** slim이란 글자 지우고, .js" 뒤에 암호같은 부분은 다 지우기
 
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 

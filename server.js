@@ -97,3 +97,8 @@ app.get('/list', (요청, 응답) => {
     console.log(결과)
   });
 });
+
+/* DELETE */
+app.delete('/delete', (요청, 응답) => {
+  console.log(요청.body); // delete 요청할 경우 출력 가능 
+})
