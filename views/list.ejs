@@ -50,7 +50,7 @@
         </h4>
         <p>할일 마감날짜 : <%= posts[i].date%>
         </p>
-        <button>삭제</button>
+        <button class='delete' data-id="<%= posts[i]._id %>">삭제</button>
       </li>
       <% } %>
   </ul>
@@ -61,12 +61,17 @@
 
   <script>
 
-    $.ajax({
-      method: 'DELETE', // 서버에 새로고침없이 DELETE 요청을 할거예요~
-      url: '/delete', //요청할 경로'
-      data: '123' //'요청과 함께 보낼 데이터 => 게시물 번호'
-    }).done((결과) => {
-      // 요청이 성공하면 이 부분을 실행
+    // jQuery
+    $('.delete').click((e) => {
+      var 글번호 = e.target.dataset.id;
+      $.ajax({
+        method: 'DELETE', // 서버에 새로고침없이 DELETE 요청을 할거예요~
+        url: '/delete', //요청할 경로'
+        data: { _id: 글번호 } //'요청과 함께 보낼 데이터 => 게시물 번호' => { _id: 1 }
+      }).done((결과) => {
+        // 요청이 성공하면 이 부분을 실행
+        // 삭제 버튼을 <li> 누른 요소를 안보이게 제거
+      });
     });
 
   </script>
@@ -74,9 +79,6 @@
   <p>
     <!-- Optional JavaScript; choose one of the two! -->
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
       crossorigin="anonymous"></script>

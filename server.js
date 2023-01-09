@@ -101,4 +101,10 @@ app.get('/list', (요청, 응답) => {
 /* DELETE */
 app.delete('/delete', (요청, 응답) => {
   console.log(요청.body); // delete 요청할 경우 출력 가능 
+  // 요청.body에 담겨운 게시물 번호를 가진 글을 db에서 찾아서 삭제해주세요.
+  요청.body._id = parseInt(요청.body._id); // 숫자로 변환
+  db.collection('post').deleteOne(요청.body, (에러, 결과) => {
+    console.log('삭제 완료');
+  });
+  응답.send('삭제 완료')
 })
