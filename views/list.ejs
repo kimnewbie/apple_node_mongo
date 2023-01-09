@@ -64,6 +64,7 @@
     // jQuery
     $('.delete').click((e) => {
       var 글번호 = e.target.dataset.id;
+      var 지금누른거 = $(this); // 지금 이벤트 동작하는 곳
       $.ajax({
         method: 'DELETE', // 서버에 새로고침없이 DELETE 요청을 할거예요~
         url: '/delete', //요청할 경로'
@@ -71,6 +72,11 @@
       }).done((결과) => {
         // 요청이 성공하면 이 부분을 실행
         // 삭제 버튼을 <li> 누른 요소를 안보이게 제거
+        console.log('성공했어요');
+        지금누른거.parent('li').fadeOut(); // 부모님 찾기 => <li> 찾기 => fadeOut(숨기기)
+      }).fail((xhr, textStatus, errorThrown) => {
+        // 요청이 실패하면 이 부분을 실행
+        console.log(xhr, textStatus, errorThrown);
       });
     });
 
