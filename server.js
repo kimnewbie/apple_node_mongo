@@ -110,4 +110,12 @@ app.delete('/delete', (요청, 응답) => {
     // 응답.status(400).send({ message: '실패했습니다' }); // 응답코드 400(고객 잘못 실패)으로 보내주세요~
   });
   // 응답.send('삭제 완료')
-})
+});
+
+/* DETAIL */
+app.get('/detail/:id', (요청, 응답) => {
+  db.collection('post').findOne({ _id: parseInt(요청.params.id) }, (에러, 결과) => {
+    console.log(결과)
+    응답.render('detail.ejs', { data: 결과 });
+  });
+});
