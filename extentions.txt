@@ -56,8 +56,8 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
     [server.js] > 추가
     const methodOverride = require('method-override')
     app.use(methodOverride('_method'))
-    [edit.ejs] > 수정 (/add?_method=PUT)
-    <form action="/add?_method=PUT" method="POST">
+    [edit.ejs] > 수정 (/edit?_method=PUT)
+    <form action="/edit?_method=PUT" method="POST">
 
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 

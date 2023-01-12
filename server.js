@@ -136,4 +136,13 @@ app.get('/edit/:id', (요청, 응답) => {
     console.log(결과)
     응답.render('edit.ejs', { post: 결과 })
   });
+});
+
+app.put('/edit', (요청, 응답) => {
+  // 폼에 담긴 제목, 날짜 데이터를 가지고 db.collection에다가 업데이트 함
+  // 요청.body.id => input id가 id인 것 찾아오기
+  db.collection('post').updateOne({ _id: parseInt(요청.body.id) }, { $set: { todo: 요청.body.todo, date: 요청.body.date } }, (에러, 결과) => {
+    console.log('수정 완료');
+    응답.redirect('/list'); // 수정 완료 후 /list로 이동
+  });
 })
