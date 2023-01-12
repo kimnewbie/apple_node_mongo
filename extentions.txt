@@ -41,7 +41,7 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
 
 // EJS (html 전처리 엔진)
     EJS($yarn add ejs)
-    [server.js]
+    [server.js] > 추가
     app.set('view engine', 'ejs');
     [views] 라는 폴더 만들고
     list.html > list.ejs -- 이름 변경 후에 views에 넣음
@@ -50,6 +50,14 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
 // AJAX 사용하기 위해 jQuery 라이브러리 설치
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     ** slim이란 글자 지우고, .js" 뒤에 암호같은 부분은 다 지우기
+
+// HTML에 PUT, DELETE를 사용하기 위해 method-override 설치
+    method-override($yarn add method-override )
+    [server.js] > 추가
+    const methodOverride = require('method-override')
+    app.use(methodOverride('_method'))
+    [edit.ejs] > 수정 (/add?_method=PUT)
+    <form action="/add?_method=PUT" method="POST">
 
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 

@@ -6,6 +6,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 /* css 파일 사용 (나는 static 파일을 보관하기 위해 public 폴더를 쓸거다) */
 app.use('/public', express.static('public'));
+/* PUT/DELETE 사용 */
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 var db; // db  변수 지정 필수(어떤 db에 저장할 것인지)
 /* MongoDB@3.6.4 연결 */
@@ -45,22 +48,20 @@ app.get("/beauty", function (요청, 응답) {
   응답.send("뷰티 용품 쇼핑 페이지입니다.");
 });
 
-/*
-    html 보내주기
-    app.get("/", (요청, 응답) => {
-      응답.sendFile(__dirname + "/index.html");
-    });
-    app.get("/write", (요청, 응답) => {
-      응답.sendFile(__dirname + "/write.html");
-    });
-*/
+// html 보내주기
+// app.get("/", (요청, 응답) => {
+//   응답.sendFile(__dirname + "/index.html");
+// });
+// app.get("/write", (요청, 응답) => {
+//   응답.sendFile(__dirname + "/write.html");
+// });
 
 /* html 에서 ejs 파일로 변경 */
 app.get("/", (요청, 응답) => {
-
+  응답.render('index.ejs');
 })
 app.get("/write", (요청, 응답) => {
-
+  응답.render('write.ejs');
 })
 /*
   어떤 사람이 /add 경로로 post 요청을하면 ~해주세요
@@ -128,3 +129,11 @@ app.get('/detail/:id', (요청, 응답) => {
     응답.render('detail.ejs', { data: 결과 });
   });
 });
+
+/* EDIT */
+app.get('/edit/:id', (요청, 응답) => {
+  db.collection('post').findOne({ _id: parseInt(요청.params.id) }, (에러, 결과) => {
+    console.log(결과)
+    응답.render('edit.ejs', { post: 결과 })
+  });
+})
