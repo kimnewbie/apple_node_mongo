@@ -175,6 +175,20 @@ app.post('/login', passport.authenticate('local', {
   응답.redirect('/'); // 회원 인증 성공하고 그러면 redirect
 });
 
+app.get('/mypage', 로그인했니, (요청, 응답) => {
+  /* 로그인 한 사람만 들어올 수 있도록 */
+  응답.render('mypage.ejs', { 사용자: 요청.user });
+});
+/* 마이페이지 접속 전 실행할 미들웨어 */
+function 로그인했니(요청, 응답, next) {
+  if (요청.user) {
+    /* 로그인 후 세션이 있으면 요청.user가 항상 있음 */
+    next();
+  } else {
+    응답.send('로그인해주세요');
+  }
+}
+
 /* 아이디 비번 인증하는 세부 코드 작성 */
 passport.use(new LocalStrategy({
   usernameField: 'id', // (요기는 사용자가 제출한 아이디(input id)가 어디 적혔는지) 
@@ -200,6 +214,11 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 /* 이 세션 데이터를 가진 사람을 DB에서 찾아주세요(마이페이지 접속시 발동) */
+/* 위 serializeUser의 user가 밑에 아이디와 같음 */
 passport.deserializeUser((아이디, done) => {
-  done(null, {});
+  // 디비에서 위에있는 user.id로 유저를 찾은 뒤에 유저 정보를 넣음 done(null,{})
+  db.collection('login').findOne({ id: 아이디 }, (에러, 결과) => {
+    console.log(결과)
+    done(null, 결과);
+  })
 });
