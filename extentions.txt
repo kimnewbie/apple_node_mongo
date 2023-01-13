@@ -70,5 +70,10 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
     app.use(passport.initialize());
     app.use(passport.session()); 
 
+// .env 파일을 위한 dotenv
+    $yarn add dotenv
+    [server.js] > 추가
+    require('dotenv').config();
+
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 

@@ -1,4 +1,5 @@
 // const MONGO_CLIENT_CONNECTOR = process.env.MONGO_CLIENT_CONNECTOR;
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -13,7 +14,7 @@ app.use(methodOverride('_method'));
 var db; // db  변수 지정 필수(어떤 db에 저장할 것인지)
 /* MongoDB@3.6.4 연결 */
 const MongoClient = require("mongodb").MongoClient;
-MongoClient.connect('mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w=majority', (에러, client) => {
+MongoClient.connect(process.env.MONGO_CLIENT_CONNECTOR, (에러, client) => {
   // 에러 처리
   if (에러) return console.log(에러);
 
@@ -21,7 +22,7 @@ MongoClient.connect('mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.ne
   db = client.db('todoapp');
 
   //서버띄우는 코드 여기로 옮기기
-  app.listen("3030", function () {
+  app.listen(process.env.PORT, function () {
     console.log("listening on 3030");
   });
 }
