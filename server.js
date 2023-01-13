@@ -181,16 +181,25 @@ passport.use(new LocalStrategy({
   passwordField: 'password', // (요기는 사용자가 제출한 비번(input id)이 어디 적혔는지) 
   session: true, // (요기는 세션을 만들건지) 
   passReqToCallback: false, // (요기는 아이디/비번말고 다른 정보검사가 필요한지) 
-}, function (입력한아이디, 입력한비번, done) {
+}, (입력한아이디, 입력한비번, done) => {
   //console.log(입력한아이디, 입력한비번);
   db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
     if (에러) return done(에러)
-
+    /* 일치하는 정보가 없다 */
     if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
-    if (입력한비번 == 결과.pw) {
+    if (입력한비번 == 결과.password) {
       return done(null, 결과)
     } else {
       return done(null, false, { message: '비번틀렸어요' })
     }
   })
 }));
+/* id를 이용해서 세션을 저장시키는 코드(로그인 성공시 발동) */
+/* 위에 보이는 return done(null, 결과)에서 결과값이 user로 들어감 */
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+/* 이 세션 데이터를 가진 사람을 DB에서 찾아주세요(마이페이지 접속시 발동) */
+passport.deserializeUser((아이디, done) => {
+  done(null, {});
+});
