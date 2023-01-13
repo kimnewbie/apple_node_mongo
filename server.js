@@ -145,4 +145,52 @@ app.put('/edit', (요청, 응답) => {
     console.log('수정 완료');
     응답.redirect('/list'); // 수정 완료 후 /list로 이동
   });
-})
+});
+
+app.get('/fail', (요청, 응답) => {
+  응답.render('fail.ejs');
+});
+
+/* Authentication by Session */
+/* Authentication by Session */
+/* Authentication by Session */
+const passport = require('passport'); // 로그인 기능 쉽게 구현 도와줌
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+// app.use(미들웨어) > 웹서버는 요청-응답해주는 머신
+app.use(session({ secret: '비밀코드', resave: true, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/login', (요청, 응답) => {
+  응답.render('login.ejs');
+});
+
+app.post('/login', passport.authenticate('local', {
+  /* local 방식으로 인증 'local' */
+  /* 로그인 실패하면 /fail로 이동 */
+  failureRedirect: '/fail'
+}), (요청, 응답) => {
+  응답.redirect('/'); // 회원 인증 성공하고 그러면 redirect
+});
+
+/* 아이디 비번 인증하는 세부 코드 작성 */
+passport.use(new LocalStrategy({
+  usernameField: 'id', // (요기는 사용자가 제출한 아이디(input id)가 어디 적혔는지) 
+  passwordField: 'password', // (요기는 사용자가 제출한 비번(input id)이 어디 적혔는지) 
+  session: true, // (요기는 세션을 만들건지) 
+  passReqToCallback: false, // (요기는 아이디/비번말고 다른 정보검사가 필요한지) 
+}, function (입력한아이디, 입력한비번, done) {
+  //console.log(입력한아이디, 입력한비번);
+  db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
+    if (에러) return done(에러)
+
+    if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
+    if (입력한비번 == 결과.pw) {
+      return done(null, 결과)
+    } else {
+      return done(null, false, { message: '비번틀렸어요' })
+    }
+  })
+}));

@@ -59,5 +59,16 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
     [edit.ejs] > 수정 (/edit?_method=PUT)
     <form action="/edit?_method=PUT" method="POST">
 
+// Session 방식 로그인 기능 구현 준비 라이브러리 3개 설치(passport, passport-local, express-session)
+    $yarn add passport passport-local express-session
+    [server.js] > 추가
+    const passport = require('passport');
+    const LocalStrategy = require('passport-local').Strategy;
+    const session = require('express-session');
+
+    app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+    app.use(passport.initialize());
+    app.use(passport.session()); 
+
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 
