@@ -111,9 +111,15 @@ app.get('/list', (요청, 응답) => {
 
 /*
  * /list에서 query string 꺼내기 (검색 기능)
+  Binaary Search 적용을 위한 indexing 방법
+    - mongo db > indexes > create index >  
+    {
+      "todo": "text", 
+    }
  */
 app.get('/search', (요청, 응답) => {
   console.log(요청.query.value);
+  /* 정규식 -> /요청.query.value/ -> but 자료 많을 때 오래걸림 */
   db.collection('post').find({ todo: 요청.query.value }).toArray((에러, 결과) => {
     console.log(결과)
     응답.render('search.ejs', { posts: 결과 });
