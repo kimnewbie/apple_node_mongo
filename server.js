@@ -119,8 +119,29 @@ app.get('/list', (요청, 응답) => {
  */
 app.get('/search', (요청, 응답) => {
   console.log(요청.query.value);
-  /* 정규식 -> /요청.query.value/ -> but 자료 많을 때 오래걸림 */
-  db.collection('post').find({ todo: 요청.query.value }).toArray((에러, 결과) => {
+  /* 
+    정규식 -> /요청.query.value/ -> but 자료 많을 때 오래걸림 
+    todo: 요청.query.value  대신 text:{ $search: 요청.query.value }
+    [2]
+    db.collection('post').find({ $text: { $search: 요청.query.value } })
+    대신
+
+  */
+  var 검색조건 = [
+    {
+      $search: {
+        index: 'titleSearch', // '님이만든인덱스명'
+        text: {
+          query: 요청.query.value,
+          path: 'todo' // 'todo'  // 제목날짜 둘다 찾고 싶으면 ['todo', 'date']
+        }
+      }
+    },
+    { $sort: { _id: 1 } },
+    // { $limit: 10 },
+    // { $project: { todo: 1, _id: 0, date: 1, score: { $meta: "searchScore" } } } // 1: 가져온다, 0: 안가져온다
+  ]
+  db.collection('post').aggregate(검색조건).toArray((에러, 결과) => {
     console.log(결과)
     응답.render('search.ejs', { posts: 결과 });
   });

@@ -41,6 +41,8 @@
       <ul class="list-group">
         <% for(var i in posts){ %>
           <li class="list-group-item">
+            <p>글번호: <%= posts[i]._id%>
+            </p>
             <h4>할일 제목 : <%= posts[i].todo%>
             </h4>
             <p>할일 마감날짜 : <%= posts[i].date%>
@@ -81,6 +83,14 @@
         /* <input>에 유저가 입력한 값 */
         var 입력한값 = $('#search-input').val();
         window.location.replace('/search?value=' + 입력한값);
+
+        /*
+          query string 만들어주는 방법
+            var 자료 = {이름: '값', 이름2: '값2'}
+            $.params(자료);
+            (or)
+            $(폼태그).serialize();
+        */
       });
 
     </script>
