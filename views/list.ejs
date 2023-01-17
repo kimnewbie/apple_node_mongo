@@ -41,11 +41,17 @@
       <ul class="list-group">
         <% for(var i in posts){ %>
           <li class="list-group-item">
-            <p>글번호: <%= posts[i]._id%>
+            <p>
+              글번호: <%= posts[i]._id%>
+                <p>
+                  작성자 : <%= posts[i].writerId%>
+                </p>
             </p>
-            <h4>할일 제목 : <%= posts[i].todo%>
+            <h4>
+              할일 제목 : <%= posts[i].todo%>
             </h4>
-            <p>할일 마감날짜 : <%= posts[i].date%>
+            <p>
+              할일 마감날짜 : <%= posts[i].date%>
             </p>
             <button class='btn btn-danger delete' data-id="<%= posts[i]._id %>">삭제</button>
           </li>
