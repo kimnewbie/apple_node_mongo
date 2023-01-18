@@ -14,11 +14,16 @@ function 로그인했니(요청, 응답, next) {
   }
 }
 
-router.get('/sports', 로그인했니, function (요청, 응답) {
+/* router.use() => router 전체에 쓸 수 있는 미들 웨어 */
+router.use(로그인했니);
+/* 특정 경로에만 적용하는 방법 */
+// router.use('sports',로그인했니);
+
+router.get('/sports', function (요청, 응답) {
   응답.send('스포츠 게시판');
 });
 
-router.get('/game', 로그인했니, function (요청, 응답) {
+router.get('/game', function (요청, 응답) {
   응답.send('게임 게시판');
 });
 
