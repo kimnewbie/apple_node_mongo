@@ -278,3 +278,13 @@ app.get('/list', (요청, 응답) => {
     응답.render('list.ejs', { posts: 결과 });
   });
 });
+
+
+
+
+
+/* routes 적용 */
+/* shop으로 시작하는 라우트 */
+app.use('/shop', require('./routes/shop.js'));
+/* board/sub으로 시작하는 라우트 */
+app.use('/board/sub', require('./routes/board.js'));
