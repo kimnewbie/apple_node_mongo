@@ -318,6 +318,24 @@ app.post('/message', 로그인했니, function (요청, 응답) {
     })
 });
 
+app.get('/message/:parentid', 로그인했니, function (요청, 응답) {
+  /* header를 수정해주세요~ */
+  응답.writeHead(200, {
+    "Connection": "keep-alive",
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+  });
+
+  db.collection('message').find({ parent: 요청.params.parentid }).toArray()
+    .then((결과) => {
+      console.log(결과);
+      응답.write('event: test\n');
+      /* 서버에서 실시간 전송시 문자자료만 전송 가능 */
+      응답.write(`data: ${JSON.stringify(결과)}\n\n`);
+    });
+
+});
+
 
 
 /* routes 적용 */
