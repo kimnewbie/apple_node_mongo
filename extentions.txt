@@ -75,5 +75,8 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
     [server.js] > 추가
     require('dotenv').config();
 
+// 파일 업로드를 위한 multer 설치
+    $yarn add multer
+
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 

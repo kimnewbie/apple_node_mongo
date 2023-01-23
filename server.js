@@ -23,7 +23,7 @@ MongoClient.connect(process.env.MONGO_CLIENT_CONNECTOR, (에러, client) => {
 
   //서버띄우는 코드 여기로 옮기기
   app.listen(process.env.PORT, function () {
-    console.log("listening on 3030");
+    console.log("listening on 8080");
   });
 }
 );
@@ -288,3 +288,51 @@ app.get('/list', (요청, 응답) => {
 app.use('/shop', require('./routes/shop.js'));
 /* board/sub으로 시작하는 라우트 */
 app.use('/board/sub', require('./routes/board.js'));
+
+
+
+
+/* 파일 업로드 'multer' 라이브러리 사용 */
+let multer = require('multer');
+// diskStorage => 업로드 파일을 하드에 저장 가능
+// memoryStorage => 하드 대신 램에 저장(휘발성) 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/image')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+});
+
+// var upload = multer({ storage: storage });
+
+var path = require('path');
+
+var upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+      return callback(new Error('PNG, JPG만 업로드하세요'))
+    }
+    callback(null, true)
+  },
+  limits: {
+    fileSize: 1024 * 1024
+  }
+});
+
+app.get('/upload', (요청, 응답) => {
+  응답.render('upload.ejs')
+});
+
+/* upload.single('input의 name 속성') */
+app.post('/upload', upload.single('uploadFile'), function (요청, 응답) {
+  응답.send('업로드완료')
+});
+
+/* 업로드한 이미지 보여주는 법 (이미지 API 만들기) */
+app.get('/image/:imageName', (요청, 응답) => {
+  응답.sendFile(__dirname + '/public/image/' + 요청.params.imageName)
+});
