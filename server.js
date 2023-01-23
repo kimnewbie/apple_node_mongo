@@ -284,8 +284,11 @@ app.get('/list', (요청, 응답) => {
 
 
 /* [채팅방] 로그인 되있어야 하는 거라 로그인 기능 밑에 위치해야 함 */
-app.get('/chat', (요청, 응답) => {
-  응답.render('chat.ejs')
+
+app.get('/chat', 로그인했니, function (요청, 응답) {
+  db.collection('chatroom').find({ member: 요청.user._id }).toArray().then((결과) => {
+    응답.render('chat.ejs', { data: 결과 })
+  })
 });
 
 const { ObjectId } = require('mongodb');
@@ -302,14 +305,18 @@ app.post('/chatroom', (요청, 응답) => {
   });
 });
 
-app.get('/chat', 로그인했니, (요청, 응답) => {
-  db.collection('chatroom').find({ member: 요청.user._id }).toArray().then((결과) => {
-    console.log(결과);
-    응답.render('chat.ejs', { data: 결과 })
-  })
+app.post('/message', 로그인했니, function (요청, 응답) {
+  var 저장할거 = {
+    parent: 요청.body.parent,
+    userid: 요청.user._id,
+    content: 요청.body.content,
+    date: new Date(),
+  }
+  db.collection('message').insertOne(저장할거)
+    .then((결과) => {
+      응답.send(결과);
+    })
 });
-
-
 
 
 
