@@ -54,6 +54,7 @@
               할일 마감날짜 : <%= posts[i].date%>
             </p>
             <button class='btn btn-danger delete' data-id="<%= posts[i]._id %>">삭제</button>
+            <button class='btn btn-secondary chat' data-id="<%= posts[i].writerId %>">채팅</button>
           </li>
           <% } %>
       </ul>
@@ -82,6 +83,14 @@
           // 요청이 실패하면 이 부분을 실행
           console.log(xhr, textStatus, errorThrown);
         });
+
+      });// jQuery
+      $('.chat').click(function (e) {
+        var _id = e.target.dataset.id;
+        $.post('/chatroom', { 당한사람id: _id })
+          .then(() => {
+            console.log('채팅방 게시물 생성완료')
+          })
       });
 
       /* 검색 기능*/
