@@ -336,3 +336,10 @@ app.post('/upload', upload.single('uploadFile'), function (요청, 응답) {
 app.get('/image/:imageName', (요청, 응답) => {
   응답.sendFile(__dirname + '/public/image/' + 요청.params.imageName)
 });
+
+
+
+/* 채팅방 */
+app.get('/chat', (요청, 응답) => {
+  응답.render('chat.ejs')
+});
