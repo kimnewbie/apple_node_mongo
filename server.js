@@ -368,13 +368,26 @@ app.get('/socket', (요청, 응답) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('연결되었어요');
+  console.log('유저 접속 됨');
 
   /* 서버가 수신하는 코드 */
   socket.on('user-send', (data) => {
     console.log(data)
+    /* 서버 -> 특정 유저에게만 메세지 전송 */
+    // io.to(socket.id).emit('broadcast', data);
+
+    /* 서버 -> 모든 유저에게 메세지 전송 */
+    io.emit('broadcast', data);
   });
 
+  socket.on('joinroom', (data) => {
+    /* 방 만들기 */
+    socket.join('room1');
+  });
+
+  socket.on('room1-send', (data) => {
+    io.to('room1').emit('broadcast', data);
+  })
 });
 
 

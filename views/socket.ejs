@@ -20,7 +20,11 @@
 
 
     <div>채팅방</div>
+    <div id="content"></div>
+    <input id="input1">
     <button class="btn btn-secondary" id="send">서버로 메세지 보내기</button>
+    <button class="btn btn-secondary" id="room1">채팅방1 입장</button>
+    <button class="btn btn-secondary" id="room1-send">채팅방1에서 메세지 보내기</button>
 
 
     <!-- Socket.io -->
@@ -41,10 +45,21 @@
     <script>
       /* Web Socket 연결 */
       var socket = io();
+      $('#send').click(() => {
+        socket.emit('user-send', $('#input1').val());
+      });
 
-      $('#send').click(function () {
-        socket.emit('user-send', '안녕하쇼')
-      });; 
+      $('#room1-send').click(() => {
+        socket.emit('room1-send', '반가워 채팅방1 사람들아');
+      });
+
+      $('#room1').click(() => {
+        socket.emit('joinroom', '채팅방 입장 시켜줘~');
+      });
+
+      socket.on('broadcast', (data) => {
+        $('#content').append('<div>' + data + '</div>');
+      });
     </script>
 
 
