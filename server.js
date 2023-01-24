@@ -10,6 +10,13 @@ app.use('/public', express.static('public'));
 /* PUT/DELETE 사용 */
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
+/**
+ * Web Socktet for Chatting
+ * const app = express() 밑에 위치
+ */
+const http = require('http').createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(http);
 
 var db; // db  변수 지정 필수(어떤 db에 저장할 것인지)
 /* MongoDB@3.6.4 연결 */
@@ -21,8 +28,13 @@ MongoClient.connect(process.env.MONGO_CLIENT_CONNECTOR, (에러, client) => {
   // todoapp 이라는 database(폴더)에 연결
   db = client.db('todoapp');
 
-  //서버띄우는 코드 여기로 옮기기
-  app.listen(process.env.PORT, function () {
+  /**
+   * 서버띄우는 코드 여기로 옮기기
+   * Web Socket 설치 전에는 app.listen
+   * 설치 후에는 http.listen 으로 수정
+   * express를 이용한 서버 띄우기에서 http(node 기본 라이브러리) + socket.io 이용
+   */
+  http.listen(process.env.PORT, function () {
     console.log("listening on 8080");
   });
 }
@@ -348,6 +360,22 @@ app.get('/message/:parentid', 로그인했니, function (요청, 응답) {
   });
 });
 
+/**
+ * 채팅을 위한 socket 페이지
+ */
+app.get('/socket', (요청, 응답) => {
+  응답.render('socket.ejs')
+});
+
+io.on('connection', (socket) => {
+  console.log('연결되었어요');
+
+  /* 서버가 수신하는 코드 */
+  socket.on('user-send', (data) => {
+    console.log(data)
+  });
+
+});
 
 
 /* routes 적용 */

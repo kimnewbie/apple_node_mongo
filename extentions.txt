@@ -78,5 +78,8 @@ mongodb+srv://admin:Cancho429^^@cluster0.9bab5uw.mongodb.net/?retryWrites=true&w
 // 파일 업로드를 위한 multer 설치
     $yarn add multer
 
+// 채팅을 위한 Web Socket :: 양방향으로 실시간 응답 가능
+    $yarn add socket.io
+
 mongodb+srv://admin:Cancho429^^@cluster0-qaxa3.mongodb.net/Cluster0?retryWrites=true&w=majority
 
