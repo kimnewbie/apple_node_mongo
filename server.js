@@ -328,12 +328,24 @@ app.get('/message/:parentid', 로그인했니, function (요청, 응답) {
 
   db.collection('message').find({ parent: 요청.params.parentid }).toArray()
     .then((결과) => {
-      console.log(결과);
       응답.write('event: test\n');
       /* 서버에서 실시간 전송시 문자자료만 전송 가능 */
       응답.write(`data: ${JSON.stringify(결과)}\n\n`);
     });
 
+  /* DB 변동사항을 실시간 업데이트 */
+  /* DB 변동사항을 실시간 업데이트 */
+  /* DB 변동사항을 실시간 업데이트 */
+  const 찾을문서 = [
+    { $match: { 'fullDocument.parent': 요청.params.parentid } }
+  ];
+  /* watch 실시간 감시 */
+  const changeStream = db.collection('message').watch(찾을문서);
+  /* 해당 컬렉션에 변동 생기면 여기 코드 실행 */
+  changeStream.on('change', (result) => {
+    응답.write('event: test\n');
+    응답.write('data: ' + JSON.stringify([result.fullDocument]) + '\n\n')
+  });
 });
 
 
